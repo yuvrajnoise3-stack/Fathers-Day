@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Father's Day - Mukesh Fouji</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f172a,#1e293b);
+    overflow:hidden;
+    padding:20px;
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+.card{
+    width:100%;
+    max-width:400px;
+    text-align:center;
+    padding:30px 25px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(10px);
+    border-radius:25px;
+    color:white;
+    box-shadow:0 10px 35px rgba(0,0,0,0.3);
+    z-index:1;
+    animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
+}
+
+.heart{
+    font-size:60px;
+    animation:beat 1s infinite;
+}
+
+@keyframes beat{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+}
+
+h1{
+    margin-top:10px;
+    font-size:2rem;
+}
+
+.name{
+    margin:15px 0;
+    color:#FFD700;
+    font-size:1.8rem;
+    font-weight:bold;
+}
+
+.message{
+    line-height:1.7;
+    font-size:1rem;
+}
+
+button{
+    margin-top:25px;
+    padding:14px 28px;
+    border:none;
+    border-radius:50px;
+    background:#FFD700;
+    color:#111;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+button:active{
+    transform:scale(.95);
+}
+
+.footer{
+    margin-top:20px;
+    color:#ddd;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="card">
+    <div class="heart">❤️</div>
+
+    <h1>Happy Father's Day</h1>
+
+    <div class="name">Mukesh Fouji</div>
+
+    <p class="message" id="msg">
+        Thank you for your love, support, guidance and strength.
+        You are my hero, my inspiration and my greatest blessing.
+    </p>
+
+    <button id="celebrateBtn">🎉 Celebrate Dad</button>
+
+    <div class="footer">With Love ❤️</div>
+</div>
+
+<script>
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+let confetti = [];
+
+function createConfetti(count){
+    for(let i=0;i<count;i++){
+        confetti.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height-canvas.height,
+            size:Math.random()*8+4,
+            speed:Math.random()*4+2,
+            color:`hsl(${Math.random()*360},100%,50%)`,
+            tilt:Math.random()*10
+        });
+    }
+}
+
+createConfetti(150);
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    confetti.forEach((p,index)=>{
+        p.y += p.speed;
+        p.x += Math.sin(p.y*0.01);
+
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x,p.y,p.size,p.size);
+
+        if(p.y > canvas.height){
+            confetti[index] = {
+                x:Math.random()*canvas.width,
+                y:-20,
+                size:Math.random()*8+4,
+                speed:Math.random()*4+2,
+                color:`hsl(${Math.random()*360},100%,50%)`
+            };
+        }
+    });
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+document.getElementById("celebrateBtn").addEventListener("click", ()=>{
+
+    createConfetti(300);
+
+    document.getElementById("msg").innerHTML =
+    "🎉 World's Best Father 🎉<br><br>Dear Mukesh Fouji,<br>Thank you for always being my strength, guide and inspiration. Your love and support mean everything. Happy Father's Day ❤️";
+
+    document.getElementById("celebrateBtn").innerHTML =
+    "❤️ Love You Dad ❤️";
+});
+</script>
+
+</body>
+</html>
